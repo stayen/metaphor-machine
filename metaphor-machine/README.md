@@ -420,7 +420,7 @@ python metaphor-machine.py \
 
 ```bash
 python metaphor-machine.py \
-  --task definitions \
+  --task sequence \
   --styles style_components.yaml \
   --personas personas.yaml \
   --persona "Wilds sisters" \
@@ -447,6 +447,15 @@ python metaphor-machine.py \
   --task refine \
   --initial-definition "some style of music definition" \
   --refinement-goal "make it more vivid and brighter"
+```
+
+** 5. Typical 'give me dozen sequences' call:
+
+```bash
+python metaphor-machine.py \
+  --task sequence \
+  --styles style_components.yaml \
+  --count 12
 ```
 
 ### Parameters explanation:
