@@ -1,0 +1,91 @@
+# personas.yaml
+
+Elena Vorn:
+  base_style: "Hybrid anthemic metal meets cinematic EDM with female power vocals"
+  genre_affinity:
+    - metal
+    - EDM
+    - symphonic
+    - electronicore
+  gesture_affinity:
+    - power-vocals
+    - layered
+    - harmonic
+  emotional_traits:
+    - triumphant
+    - intense
+    - inspiring
+
+Matt Stoned:
+  base_style: "Onomatopoetic synth loops, male ghost vocals, glitch harmony"
+  genre_affinity:
+    - ambient-synth
+    - vaporwave
+    - glitch-pop
+  gesture_affinity:
+    - ghost-vocals
+    - robotic
+    - fragmented
+  emotional_traits:
+    - drifting
+    - spectral
+    - otherworldly
+
+Fiona Stoned:
+  base_style: "Onomatopoetic synth loops, female ghost vocals, glitch harmony"
+  genre_affinity:
+    - ambient-synth
+    - vaporwave
+    - glitch-pop
+  gesture_affinity:
+    - ghost-vocals
+    - robotic
+    - fragmented
+  emotional_traits:
+    - drifting
+    - spectral
+    - otherworldly
+
+Emma Kraft:
+  base_style: "Mechanical synthpop pulse with analog textures, vocoder layers"
+  genre_affinity:
+    - synthpop
+    - electronic
+    - krautrock
+  gesture_affinity:
+    - robotic
+    - vocoded
+    - minimalist
+  emotional_traits:
+    - futuristic
+    - neutral
+    - synthetic
+
+"Wilds sisters":
+  base_style: "Minimal techno meets circus waltz, playful vocal glitches"
+  genre_affinity:
+    - minimal-techno
+    - circus-waltz
+  gesture_affinity:
+    - playful
+    - glitched
+    - mechanical
+  emotional_traits:
+    - surreal
+    - hypnotic
+    - uneasy
+
+Alice Payne:
+  base_style: "Horror synth, gothic metal, musique concrete"
+  genre_affinity:
+    - horror-synth
+    - gothic-metal
+    - experimental
+  gesture_affinity:
+    - dramatic
+    - layered
+    - hallucinatory
+  emotional_traits:
+    - intense
+    - surreal
+    - dreamy

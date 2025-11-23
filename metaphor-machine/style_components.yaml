@@ -1,0 +1,360 @@
+# style_components.yaml
+
+genre:
+  eras:
+    - lo-fi
+    - hyperpop
+    - darkwave
+    - ritual
+    - forest
+    - witch-house
+    - cinematic
+    - Gqom-tempo
+    - drone-doom
+    - emo-trap
+    - boom-bap
+    - vaporwave
+    - synthwave
+    - minimal-techno
+    - shoegaze
+    - baroque-pop
+    - chamber-pop
+    - swing-jazz
+    - post-rock
+    - ethno-fusion
+    - dub
+    - reggae
+    - isicathamiya
+    - phonk
+    - noir
+    - spacewestern
+    - membran-phonk
+    - sacred-harp
+    - tuvan-drone
+    - classical-fugue
+    - memphis-phonk
+    - gagaku
+    - glitch-jazz
+    - steppe-reggae
+    - trip-hop
+    - mbube-soul
+    - echo-pop
+    - epic-doom
+    - dark-orchestral
+
+  subgenres:
+    lo-fi:
+      - boom-bap
+      - chill-hops
+      - jazz-sample
+      - ambient-lo-fi
+    hyperpop:
+      - meltdown
+      - glitch-pop
+      - chaotic-euphoria
+      - maximalist
+    darkwave:
+      - electro
+      - post-punk
+      - cold-wave
+      - synth-goth
+    ritual:
+      - ambient
+      - chant-driven
+      - ethnic-fusion
+      - ceremonial
+    forest:
+      - folk
+      - field-recording
+      - ambient-nature
+      - ethereal
+    witch-house:
+      - lullaby
+      - haunted-lullaby
+      - dark-ambient
+      - occult-pop
+    cinematic:
+      - pop-ballad
+      - orchestral
+      - epic-swell
+      - underscore
+    Gqom-tempo:
+      - ritual
+      - urban-dance
+      - township-energy
+      - polyrhythmic
+    drone-doom:
+      - folk
+      - funeral-march
+      - processional
+      - apocalyptic
+    emo-trap:
+      - ballad
+      - atmospheric
+      - vulnerable-rap
+      - heartbreak
+
+  fallback_subgenres:
+    - fusion
+    - hybrid
+    - blend
+    - mutation
+
+intimate_gesture:
+  intensity_adjectives:
+    energy:
+      - whispered
+      - hushed
+      - breathy
+      - deadpan
+      - fragile
+      - raspy
+      - sermon-like
+      - chant-like
+      - taunting
+      - half-spoken
+      - velvet
+      - drunken
+      - diary-like
+    texture:
+      - creaking
+      - crackled
+      - glassy
+      - metallic
+      - woody
+      - reedy
+      - nasal
+      - gravelly
+      - silky
+      - gritty
+    emotional:
+      - vulnerable
+      - defiant
+      - ecstatic
+      - mournful
+      - playful
+      - haunted
+      - hypnotic
+      - urgent
+
+  delivery_nouns:
+    spoken:
+      - confessions
+      - murmurs
+      - mantras
+      - ranting-verses
+      - sermon-speech
+      - diary-lines
+      - story-rap
+      - talk-singing
+      - call-and-response-shouts
+      - half-recited-prayers
+      - spoken-word-poetry
+    sung:
+      - falsetto-runs
+      - lullaby-vocals
+      - chant-hooks
+      - wailing-phrases
+      - soprano-flights
+      - modal-drones
+      - harmonic-swells
+      - ululating-cries
+    hybrid:
+      - spoken-song
+      - parlando-scat
+      - murmured-chant
+      - breathed-melody
+      - whispered-rap
+      - sacred-rap
+      - deadpan-crooning
+
+dynamic_tension:
+  motion_verbs:
+    - blooming
+    - decaying
+    - spiraling
+    - smoldering
+    - crackling
+    - pulsing
+    - stuttering
+    - tidal
+    - collapsing
+    - unraveling
+    - coiling
+    - flickering
+    - swelling
+    - crashing
+    - dissolving
+    - melting
+    - crystallizing
+    - breathing
+    - dripping
+    - cascading
+    - layering
+    - stripping
+    - rupturing
+    - floating
+    - sinking
+    - ascending
+    - descending
+    - vibrating
+    - churning
+    - whirling
+
+  musical_objects:
+    harmonic:
+      - harmonies
+      - arpeggios
+      - inversions
+      - modal-shifts
+      - chords
+    percussive:
+      - 808s
+      - hi-hats
+      - kick-patterns
+      - snares
+      - tom-rolls
+      - cymbals
+      - tam-tam-swells
+      - gongs
+    melodic:
+      - synths
+      - strings
+      - pads
+      - basslines
+      - leads
+      - countermelodies
+    textural:
+      - drones
+      - noise-beds
+      - reverb-trails
+      - haze
+      - shimmer
+      - static
+    choral:
+      - choirs
+      - harmonies
+      - vocal-layers
+      - ghost-chants
+      - ensemble-swell
+
+sensory_bridge:
+  environments:
+    - forest
+    - subway-tunnel
+    - neon-alley
+    - cathedral
+    - basement
+    - attic
+    - empty-gym
+    - midnight-highway
+    - foggy-harbor
+    - abandoned-factory
+    - rain-soaked-street
+    - theater-stage
+    - caves
+    - rooftop
+    - ballroom
+    - warehouse
+    - beach-at-dusk
+    - burnt-field
+    - hospital-wing
+    - chapel
+    - desert
+    - glacier
+    - shipwreck
+    - carnival
+    - ruins
+
+  sensory_mediums:
+    visual-lens:
+      - VHS
+      - CRT-screen
+      - phone-camera
+      - neon-lens
+      - sepia-film
+      - CCTV
+      - Polaroid
+      - film-noir
+      - thermal-imaging
+      - kaleidoscope
+    audio-effect:
+      - reverb
+      - echo
+      - haze
+      - glow
+      - blur
+      - shimmer
+      - hum
+      - static
+      - shadow
+      - crackle
+      - whisper
+      - roar
+
+  descriptors:
+    - reverb
+    - echo
+    - haze
+    - glow
+    - blur
+    - shimmer
+    - hum
+
+emotional_anchor:
+  emotions:
+    negative:
+      - heartbreak
+      - longing
+      - regret
+      - dread
+      - paranoia
+      - despair
+      - anguish
+      - numbness
+      - void
+      - dissolution
+    positive:
+      - relief
+      - euphoria
+      - ecstasy
+      - awe
+      - wonder
+      - exaltation
+    complex:
+      - nostalgia
+      - forgiveness
+      - defiance
+      - acceptance
+      - bittersweet
+      - haunted
+      - redemption
+      - melancholy
+      - wistful
+
+  arcs:
+    musical:
+      - crescendo
+      - comedown
+      - afterglow
+      - drop
+      - dissolve
+      - echo
+      - undertow
+      - flare
+      - blackout
+      - fade-to-silence
+      - surge
+      - collapse
+      - catharsis
+    temporal:
+      - surrender
+      - quiet-resolve
+      - numb-aftermath
+      - haunted-calm
+      - bittersweet-dawn
+      - last-stand
+      - exodus
+      - dawn-arrival
+      - midnight-reckoning
+      - eternal-return
