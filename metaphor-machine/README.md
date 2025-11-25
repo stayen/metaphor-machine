@@ -496,6 +496,10 @@ If omitted, results in random selection of all the parameters.
 
 **Optional**. Defaults to 0 if omitted. Sets the depth of Hamming distance between styles in a batch. 0 means no restriction; 5 means every term should differ from every previous one.
 
+#### --seed INT
+
+**Optional**. Defaults to None. If defined, seeds the pseudo-random integers generator, allowing to generate re-producible results, other parameters unchanged.
+
 #### --llm-sequence
 
 For `--llm-generate` task outputs the prompt to request sequences.

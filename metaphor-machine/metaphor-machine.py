@@ -1044,6 +1044,14 @@ def main() -> None:
         required=False,
         help="Persona name to bias generation toward (must exist in personas YAML if provided).",
     )
+    
+    # RNG seed to produce stable results for the same parameters
+    parser.add_argument(
+        "--seed",
+        type=int,
+        required=False,
+        help="Optional random seed for reproducible output.",
+    )
 
     # Shared count (definitions + llm-generate)
     parser.add_argument(
@@ -1105,6 +1113,12 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+    
+    # ------------------------------------------------------------
+    # Optional RNG seeding for reproducibility
+    # ------------------------------------------------------------
+    if args.seed is not None:
+        random.seed(args.seed)
 
     # ------------------------------------------------------------
     # Load configs (only actually required for 'definitions')
