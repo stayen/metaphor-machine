@@ -383,18 +383,177 @@ The underlying machine is the same; you just apply it per “moment” in the tr
 
 ---
 
-## Usage
+## Python Environment Setup
+
+This guide explains how to set up a minimal Python environment for running the **Metaphor Machine** scripts on both Windows and Linux.
+
+The only external Python dependency currently required is:
+
+- `PyYAML` – for loading `style_components.yaml` and `personas.yaml`
+
+Python version: **3.10+** is required.
+
+---
+
+### 1. Install Python 3.10+ and `pip`
+
+#### 1.1 Windows
+
+1. Go to the official Python downloads page:  
+   https://www.python.org/downloads/windows/
+2. Download the latest **Python 3.x** installer (3.10 or newer).
+3. Run the installer and **check the box**:
+   - `Add Python 3.x to PATH`
+4. Choose **Install Now** (or customize if you prefer).
+5. After install, open **Command Prompt** and verify:
+
+   ```bat
+   python --version
+   pip --version
+   ```
+
+   You should see Python 3.10+ and a `pip` version listed. If `python` doesn’t work, try `py`:
+
+   ```bat
+   py --version
+   ```
+
+#### 1.2 Linux (Debian/Ubuntu-style)
+
+On many modern distributions, Python 3 is already installed. Check with:
+
+```bash
+python3 --version
+```
+
+If you do not have Python 3.10+ yet, on Debian/Ubuntu you can typically run:
+
+```bash
+sudo apt update
+sudo apt install python3 python3-pip python3-venv
+```
+
+Then verify:
+
+```bash
+python3 --version
+pip3 --version
+```
+
+> On some distros the commands are `python` / `pip` instead of `python3` / `pip3`. Use whatever matches your system.
+
+---
+
+### 2. Create and Use a Virtual Environment (`venv`)
+
+Using a **virtual environment** keeps the Metaphor Machine dependencies isolated from other projects.
+
+Pick a directory where you want the project to live, e.g. `metaphor-machine/`.
+
+#### 2.1 Windows
+
+From **Command Prompt** or PowerShell, inside your project folder:
+
+```bat
+python -m venv .venv
+```
+
+This creates a `.venv/` directory with an isolated Python environment.
+
+Activate it:
+
+```bat
+.\.venv\Scripts\activate
+```
+
+You should see `(.venv)` at the beginning of your prompt. To deactivate later:
+
+```bat
+deactivate
+```
+
+#### 2.2 Linux
+
+Inside your project folder:
+
+```bash
+python3 -m venv .venv
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+Your prompt should now show `(.venv)`.
+
+Deactivate with:
+
+```bash
+deactivate
+```
+
+> Always make sure your virtual environment is **activated** before installing packages or running the Metaphor Machine scripts.
+
+---
+
+#### 3. Install Required Python Modules
+
+With your virtual environment **activated**, install the required package(s) using `pip`.
+
+Currently the only explicit dependency is **PyYAML**:
+
+```bash
+pip install pyyaml
+```
+
+You can verify it installed correctly with:
+
+```bash
+python -c "import yaml; print('PyYAML OK, version =', yaml.__version__)"
+```
+
+##### Optional: `requirements.txt`
+
+If you prefer, you can create a `requirements.txt` file in the project root with:
+
+```text
+pyyaml
+```
+
+Then install everything with:
+
+```bash
+pip install -r requirements.txt
+```
+
+This makes it easy to recreate the environment on a new machine or for other collaborators.
+
+---
+
+#### 4. Running the Metaphor Machine
+
+With the virtual environment active and `pyyaml` installed, you can run the main script (for example):
+
+```bash
+python metaphor-machine.py --help
+```
+
+This should display the CLI options (tasks like `definitions`, `sequence`, `llm-generate`, etc.).
+
+Remember to activate the virtual environment (`source .venv/bin/activate` on Linux, or `.\.venv\Scripts\activate` on Windows) **every time** you start a new shell session and want to work with the project.
+
+---
+
+## Using Metaphor Machine script
 
 The concept of creating plot-like sequences for a generative music service is implemented using two predefined configuration files
 
 - style_components.yaml: genres choices gathered from Suno "Explore" page, the rest is created using common sense; adjust it if necessary
 - personas.yaml: sample Suno personas definition, suitable for the purpose of Metaphor Machine
 
-The script requires Python 3; "pyyaml" module may be required to install.
-
-### How to invoke the script
-
-The below try to use all the parameters; in real life, you might not need that.
+The below examples try to use all the parameters; in real life, you might not need all of them.
 
 ** 0. Get self-explanatory help **
 
@@ -512,7 +671,7 @@ For `--llm-generate` task outputs the prompt to request sequences.
 
 **Mandatory** for `--llm-refine` task only. A string with free-form explanation of how the style should be improved.
 
-## Facts
+## Fun facts
 
 The supplied style_components.json allows generating **156 × 806 × 900 × 3,850 × 575 ≈ 2.505 × 10¹⁴** different metaphors.
 
