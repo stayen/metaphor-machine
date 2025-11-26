@@ -1,1 +1,1 @@
-"""Unit tests for metaphor_machine package."""
+"""Unit tests for metaphor machine modules."""

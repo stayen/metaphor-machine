@@ -1,1 +1,0 @@
-"""Metaphor Machine test suite."""

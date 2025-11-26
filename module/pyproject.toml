@@ -4,35 +4,35 @@ build-backend = "hatchling.build"
 
 [project]
 name = "metaphor-machine"
-version = "0.9.9"
-description = "Algorithmic generation of rich, plot-like style descriptions for AI music systems"
+version = "1.0.0"
+description = "Algorithmic generation and optimization of AI music style prompts"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    {name = "Konstantin Boyandin"}
+    { name = "stayen" },
 ]
 keywords = [
     "ai-music",
-    "suno",
-    "producer-ai",
     "prompt-engineering",
-    "generative-music",
-    "algorithmic-composition"
+    "generative-ai",
+    "suno",
+    "music-generation",
+    "optimization",
+    "genetic-algorithm",
+    "bayesian-optimization",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Typing :: Typed",
 ]
 dependencies = [
     "pyyaml>=6.0",
@@ -47,16 +47,25 @@ dev = [
     "pytest-cov>=4.0",
     "mypy>=1.0",
     "ruff>=0.1.0",
-    "pre-commit>=3.0",
+    "types-PyYAML",
 ]
 optimization = [
-    "deap>=1.4",
-    "scipy>=1.10",
     "numpy>=1.24",
+    "scipy>=1.10",
 ]
 embedding = [
     "sentence-transformers>=2.2",
-    "scikit-learn>=1.3",
+]
+llm = [
+    "anthropic>=0.18",
+    "openai>=1.0",
+]
+audio = [
+    "librosa>=0.10",
+    "soundfile>=0.12",
+]
+all = [
+    "metaphor-machine[dev,optimization,embedding,llm,audio]",
 ]
 
 [project.scripts]
@@ -64,33 +73,45 @@ metaphor = "metaphor_machine.cli.main:cli"
 mm = "metaphor_machine.cli.main:cli"
 
 [project.urls]
-Homepage = "https://github.com/stayen/metaphor-machine/module"
-Documentation = "https://metaphor-machine.readthedocs.io"
-Repository = "https://github.com/stayen/metaphor-machine/module"
-Issues = "https://github.com/stayen/metaphor-machine/issues"
+Homepage = "https://github.com/stayen/metaphor-machine"
+Repository = "https://github.com/stayen/metaphor-machine"
+Documentation = "https://github.com/stayen/metaphor-machine#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/metaphor_machine"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
 addopts = "-v --tb=short"
 
 [tool.mypy]
 python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-strict = true
+ignore_missing_imports = true
+strict_optional = true
 
 [tool.ruff]
 target-version = "py310"
 line-length = 100
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+]
 
-[tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
-ignore = ["E501"]
+[tool.ruff.isort]
+known-first-party = ["metaphor_machine"]
 
 [tool.coverage.run]
 source = ["src/metaphor_machine"]
@@ -99,6 +120,7 @@ branch = true
 [tool.coverage.report]
 exclude_lines = [
     "pragma: no cover",
-    "if TYPE_CHECKING:",
+    "def __repr__",
     "raise NotImplementedError",
+    "if TYPE_CHECKING:",
 ]

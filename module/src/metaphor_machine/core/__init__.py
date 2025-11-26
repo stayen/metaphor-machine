@@ -1,22 +1,25 @@
-"""Core generation and data structure modules."""
+"""Core metaphor data structures and generation engine."""
 
-from metaphor_machine.core.generator import GenerationError, MetaphorGenerator
 from metaphor_machine.core.metaphor import (
+    SlotType,
     ChainPosition,
+    MetaphorSlot,
     Metaphor,
     MetaphorChain,
-    MetaphorSlot,
-    SlotType,
     batch_min_distance,
+)
+from metaphor_machine.core.generator import (
+    GenerationError,
+    MetaphorGenerator,
 )
 
 __all__ = [
-    "MetaphorGenerator",
-    "GenerationError",
-    "Metaphor",
-    "MetaphorChain",
-    "MetaphorSlot",
     "SlotType",
     "ChainPosition",
+    "MetaphorSlot",
+    "Metaphor",
+    "MetaphorChain",
     "batch_min_distance",
+    "GenerationError",
+    "MetaphorGenerator",
 ]

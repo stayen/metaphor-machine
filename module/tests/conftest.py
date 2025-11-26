@@ -1,90 +1,122 @@
-"""
-Shared pytest fixtures for metaphor_machine tests.
-"""
-
-from pathlib import Path
+"""Shared test fixtures for Phase 2 modules."""
 
 import pytest
-
-from metaphor_machine.schemas.components import StyleComponents
-
-
-@pytest.fixture(scope="session")
-def fixtures_dir() -> Path:
-    """Return path to test fixtures directory."""
-    return Path(__file__).parent / "fixtures"
+from pathlib import Path
 
 
-@pytest.fixture(scope="session")
-def sample_yaml_content() -> str:
-    """Return sample YAML content for testing."""
-    return """
+@pytest.fixture
+def minimal_components_yaml(tmp_path):
+    """Create a minimal components YAML file for testing."""
+    yaml_content = """
 genre:
   eras:
-    - lo-fi
     - darkwave
-    - cinematic
+    - synthpop
+    - trip-hop
+    - ambient
   subgenres:
-    lo-fi:
-      - boom-bap
-      - chill-hop
-  fallback_subgenres:
-    - fusion
+    darkwave:
+      - coldwave
+      - ethereal
+    synthpop:
+      - electropop
 
 intimate_gesture:
   intensity_adjectives:
     energy:
-      - whispered
       - breathy
+      - whispered
+      - urgent
     texture:
-      - creaking
+      - reedy
+      - silken
+      - gravelly
+    emotional:
+      - vulnerable
+      - ecstatic
   delivery_nouns:
     spoken:
       - confessions
+      - murmurs
+      - incantations
     sung:
-      - lullaby-vocals
+      - hooks
+      - melodies
+      - harmonies
+    hybrid:
+      - chant-hooks
+      - call-and-response
 
 dynamic_tension:
   motion_verbs:
-    - blooming
+    - swelling
+    - crackling
+    - surging
     - decaying
+    - rupturing
   musical_objects:
     harmonic:
+      - synth-pads
+      - chords
       - harmonies
     percussive:
-      - 808s
+      - beats
+      - kicks
+      - snares
+    textural:
+      - noise-beds
+      - drones
 
 sensory_bridge:
   environments:
-    - forest
+    - basement
     - cathedral
+    - neon-alley
+    - shipwreck
+    - attic
   sensory_mediums:
-    audio-effect:
+    visual_lens:
+      - Polaroid
+      - neon-glow
+      - film-grain
+    audio_effect:
       - reverb
+      - static
+      - echo
   descriptors:
+    - reverb
     - haze
+    - glow
+    - shimmer
 
 emotional_anchor:
   emotions:
     negative:
-      - heartbreak
+      - melancholy
+      - dread
+      - numbness
     positive:
-      - euphoria
+      - hope
+      - joy
+      - awe
+    complex:
+      - bittersweet
+      - longing
   arcs:
     musical:
-      - crescendo
+      - drift
+      - surge
+      - flare
+    temporal:
+      - midnight-reckoning
+      - dawn-break
 """
-
-
-@pytest.fixture
-def temp_yaml_file(tmp_path: Path, sample_yaml_content: str) -> Path:
-    """Create a temporary YAML file for testing."""
-    yaml_file = tmp_path / "test_components.yaml"
-    yaml_file.write_text(sample_yaml_content)
+    yaml_file = tmp_path / "components.yaml"
+    yaml_file.write_text(yaml_content)
     return yaml_file
 
 
 @pytest.fixture
-def loaded_components(temp_yaml_file: Path) -> StyleComponents:
-    """Load StyleComponents from temporary YAML file."""
-    return StyleComponents.from_yaml(temp_yaml_file)
+def temp_yaml_file(tmp_path, minimal_components_yaml):
+    """Alias for minimal_components_yaml for compatibility."""
+    return minimal_components_yaml

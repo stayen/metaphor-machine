@@ -1,58 +1,41 @@
 # Metaphor Machine
 
+[![PyPI version](https://badge.fury.io/py/metaphor-machine.svg)](https://badge.fury.io/py/metaphor-machine)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
-**Algorithmic generation of rich, plot-like style descriptions for AI music systems.**
+**Algorithmic generation and optimization of AI music style prompts.**
 
-The Metaphor Machine produces structured 5-slot "metaphors" that guide AI music generators (Suno, Producer.ai, Udio) toward specific textures, dynamics, and emotional arcs—transforming simple genre labels into cinematic sound narratives.
-
-## What is a "Metaphor"?
-
-A **metaphor** is a short, evocative description that behaves like a *mini-plot* for a musical track:
-
-```
-cinematic pop-ballad, whispered bedside confessions, slow-bloom piano harmonies,
-bedroom-lamp reverb haze, fragile-hope heartbeat
-```
-
-Each metaphor consists of **5 slots**:
-
-| Slot | Purpose | Example |
-|------|---------|---------|
-| **Genre Anchor** | Base genre/era/style | `darkwave electro` |
-| **Intimate Gesture** | Vocal/lead behavior | `whispered confessions` |
-| **Dynamic Tension** | Motion through time | `slow-bloom harmonies` |
-| **Sensory Bridge** | Environment/space/lens | `neon-alley reverb haze` |
-| **Emotional Anchor** | Inner feeling | `heartbreak crescendo` |
-
-## Why Use It?
-
-When tested with Suno v5.0 and Producer.ai FUZZ-2.0-Pro:
-- **100% success rate** producing rich vocal textures and "songs in unknown language" effects
-- Dramatically more varied outputs than bare genre labels
-- Reproducible results via seed-based generation
-- Systematic exploration of the vast combinatorial space
+Metaphor Machine creates structured 5-slot style descriptions for AI music platforms like Suno and Producer.ai, then optimizes them through genetic and Bayesian algorithms to discover high-performing prompt patterns.
 
 ## Installation
 
+From source, with optimization extras:
 ```bash
-# From PyPI (when published)
-pip install metaphor-machine
-
-# From source
-git clone https://github.com/stayen/metaphor-machine.git
+git clone git@github.com:stayen/metaphor-machine.git
 cd module
-pip install -e ".[dev]"
+pip -e ".[optimization]"
+```
+(see also below, for other installation modes)
+
+From Pypi:
+```bash
+pip install metaphor-machine
+```
+
+With optimization extras:
+```bash
+pip install metaphor-machine[optimization]  # numpy, scipy
+pip install metaphor-machine[llm]           # anthropic, openai
+pip install metaphor-machine[all]           # everything
 ```
 
 ## Quick Start
 
-### Python API
+### Basic Generation
 
 ```python
-from metaphor_machine import MetaphorGenerator, StyleComponents
+from metaphor_machine import StyleComponents, MetaphorGenerator
 
 # Load component pools
 components = StyleComponents.from_yaml("style_components.yaml")
@@ -63,203 +46,152 @@ generator = MetaphorGenerator(components, seed=42)
 # Generate a single metaphor
 metaphor = generator.generate_single()
 print(metaphor)
-# → darkwave electro, whispered mantras, spiraling synths, neon-alley reverb, dread crescendo
+# → "darkwave electro, whispered mantras, spiraling synths, neon-alley reverb, dread crescendo"
 
-# Generate a 3-act chain (Intro → Mid → Outro)
+# Generate a 3-act chain
 chain = generator.generate_chain()
 print(chain.to_suno_style())
-# → Intro: cinematic orchestral, ... → Mid: voice soars... → Outro: melody dissolves...
-
-# Generate a diverse batch
-batch = generator.generate_batch(10, enforce_diversity=True)
+# → "Intro: cinematic orchestral... → Mid: voice opens into... → Outro: melody dissolves..."
 ```
 
-### Command Line
-
-```bash
-# Single metaphor
-metaphor generate --seed 42
-
-# 3-act chain
-metaphor chain --seed 42 --format suno
-
-# Diverse batch
-metaphor batch --count 10 --min-distance 3 --format json
-
-# Explore seeds around a known good value
-metaphor explore --seed 42 --range 10
-
-# Show pool statistics
-metaphor info
-```
-
-## Configuration
-
-### style_components.yaml
-
-The `style_components.yaml` file defines all component pools:
-
-```yaml
-genre:
-  eras:
-    - lo-fi
-    - darkwave
-    - cinematic
-    # ...
-  subgenres:
-    lo-fi:
-      - boom-bap
-      - chill-hop
-    # ...
-
-intimate_gesture:
-  intensity_adjectives:
-    energy:
-      - whispered
-      - hushed
-      - breathy
-    # ...
-  delivery_nouns:
-    spoken:
-      - confessions
-      - murmurs
-    # ...
-
-# ... (dynamic_tension, sensory_bridge, emotional_anchor)
-```
-
-### Generator Configuration
+### Optimization (v1.0)
 
 ```python
-from metaphor_machine import GeneratorConfig, DiversityConfig
-
-config = GeneratorConfig(
-    seed=42,                           # Random seed for reproducibility
-    genre_hint="darkwave",             # Bias toward specific genre
-    diversity=DiversityConfig(
-        min_hamming_distance=3,        # Min slots different between batch items
-        max_retries=100,               # Attempts before giving up
-        allow_partial=True,            # Return partial batch on failure
-    ),
+from metaphor_machine.optimization import (
+    GeneticOptimizer,
+    GeneticConfig,
+    RuleBasedEvaluator,
 )
 
-generator = MetaphorGenerator(components, config=config)
+# Create fitness evaluator
+evaluator = RuleBasedEvaluator(
+    preferred_terms=["darkwave", "ethereal", "haunting"],
+    avoided_terms=["pop", "bright"],
+)
+
+# Configure genetic algorithm
+config = GeneticConfig(
+    population_size=30,
+    generations=50,
+    elite_size=2,
+    mutation_rate=0.2,
+)
+
+# Run optimization
+optimizer = GeneticOptimizer(generator, evaluator, config)
+best = optimizer.run(verbose=True)
+
+print(f"Best: {best.metaphor}")
+print(f"Score: {best.score:.3f}")
 ```
 
-## Key Features
-
-### Seed-Based Reproducibility
-
-Same seed + same components = same outputs:
+### Corpus Storage
 
 ```python
-gen1 = MetaphorGenerator(components, seed=42)
-gen2 = MetaphorGenerator(components, seed=42)
+from metaphor_machine.corpus import SQLiteCorpus, CorpusEntry
 
-assert str(gen1.generate_single()) == str(gen2.generate_single())
+# Store optimization results
+corpus = SQLiteCorpus("prompts.db")
+
+for individual in optimizer.get_top_n(20):
+    entry = CorpusEntry.from_metaphor(
+        individual.metaphor,
+        fitness_score=individual.score,
+        tags={"genetic", "darkwave"},
+        source="genetic_optimizer",
+    )
+    corpus.add(entry)
+
+# Query high-performing prompts
+results = corpus.query(min_score=0.8, tags={"darkwave"})
+for entry in results:
+    print(f"[{entry.fitness_score:.2f}] {entry.metaphor_text}")
+
+corpus.close()
 ```
 
-### Diversity Constraints
+## Metaphor Structure
 
-Ensure batch variety via Hamming distance (count of differing slots):
+Each metaphor consists of 5 slots:
 
-```python
-batch = generator.generate_batch(10, enforce_diversity=True)
-# All pairs differ in at least 3 of 5 slots
-```
+| Slot | Purpose | Example |
+|------|---------|---------|
+| **Genre Anchor** | Base style/era | "darkwave electro" |
+| **Intimate Gesture** | Vocal/lead behavior | "whispered mantras" |
+| **Dynamic Tension** | Motion and energy | "spiraling synths" |
+| **Sensory Bridge** | Environment/space | "neon-alley reverb" |
+| **Emotional Anchor** | Feeling/resolution | "dread crescendo" |
 
-### 3-Act Chains
+The combinatorial space exceeds **35 trillion** unique combinations.
 
-Generate complete track arcs:
+## Optimization Methods
 
-```python
-chain = generator.generate_chain()
-# Intro: how it begins
-# Mid: the peak/chorus
-# Outro: the resolution
+### Genetic Algorithm
 
-print(chain.to_suno_style(separator=" → "))
-```
+Evolutionary search through selection, crossover, and mutation:
 
-### Platform Formatting
+- **Selection**: Tournament, roulette, rank, truncation
+- **Crossover**: Single-point, two-point, uniform (slot-level)
+- **Mutation**: Per-slot probability replacement
+- **Elitism**: Preserve top performers across generations
 
-```python
-from metaphor_machine.utils.formatting import format_for_suno, format_for_producer_ai
+### Bayesian Optimization
 
-# Suno (120 char limit)
-suno_style = format_for_suno(metaphor)
+Sample-efficient search for expensive evaluations (human rating, actual audio generation):
 
-# Producer.ai (longer prompts allowed)
-producer_prompt = format_for_producer_ai(chain)
-```
+- **Surrogate model**: RBF kernel interpolation
+- **Acquisition functions**: Expected Improvement, UCB, Thompson sampling
+- **External observation**: Support for async evaluation workflows
 
-## Development
+## Fitness Evaluators
 
-### Setup
+| Evaluator | Speed | Use Case |
+|-----------|-------|----------|
+| `RuleBasedEvaluator` | Fast | Keyword matching, length, diversity |
+| `SemanticCoherenceEvaluator` | Fast | Slot compatibility scoring |
+| `LLMEvaluator` | Slow | Claude/GPT quality assessment |
+| `HumanFeedbackEvaluator` | Slow | Interactive ground truth |
+| `CompositeEvaluator` | Varies | Weighted combination |
+
+## CLI Usage
 
 ```bash
-git clone https://github.com/stayen/metaphor-machine.git
-cd module
-pip install -e ".[dev]"
-pre-commit install
-```
+# Generate single metaphor
+mm generate
 
-### Testing
+# Generate with seed
+mm generate --seed 42
 
-```bash
-# Run all tests
-pytest
+# Generate diverse batch
+mm batch --count 10 --min-distance 3
 
-# With coverage
-pytest --cov=metaphor_machine --cov-report=html
-
-# Type checking
-mypy src/metaphor_machine
-```
-
-### Code Quality
-
-```bash
-# Lint and format
-ruff check src tests
-ruff format src tests
+# Generate 3-act chain
+mm chain --seed 42
 ```
 
 ## Architecture
 
 ```
-src/metaphor_machine/
-├── __init__.py           # Package exports
-├── core/
-│   ├── metaphor.py       # Data structures (Metaphor, MetaphorChain, etc.)
-│   └── generator.py      # MetaphorGenerator class
-├── schemas/
-│   ├── components.py     # Pydantic models for style_components.yaml
-│   └── config.py         # GeneratorConfig and related
-├── cli/
-│   └── main.py           # Click CLI implementation
-└── utils/
-    ├── formatting.py     # Platform-specific formatters
-    └── validation.py     # YAML validation utilities
+metaphor_machine/
+├── core/              # Metaphor, Generator, Chain
+├── schemas/           # Pydantic models, config
+├── optimization/      # Genetic, Bayesian, Fitness
+├── corpus/            # SQLite/JSON storage
+└── cli/               # Click commands
 ```
 
 ## Roadmap
 
-- **Phase 1** ✅ Core package structure, CLI, tests
-- **Phase 2** 🔜 Optimization layer (genetic algorithms, Bayesian optimization)
-- **Phase 3** 🔜 Learning layer (Markov chains on successful prompts, embeddings)
-- **Phase 4** 🔜 Platform integrations, analytics dashboard
-
-## Contributing
-
-Contributions welcome! Please read our contributing guidelines and submit PRs.
+- [x] **v0.9.9**: Core generation engine, CLI, seed reproducibility
+- [x] **v1.0.0**: Optimization layer (genetic, Bayesian, corpus)
+- [ ] **v1.1**: Variation engine (Markov chains, latent navigation)
+- [ ] **v1.2**: Audio feedback loop (librosa features, embedding similarity)
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT
 
-## Acknowledgments
+## Links
 
-- Inspired by community discoveries on r/SunoAI and AI music Discord servers
-- Built on research into transformer-based music generation
-- Component pools refined through 400+ generation tests
+- [GitHub](https://github.com/stayen/metaphor-machine)
+- [PyPI](https://pypi.org/project/metaphor-machine/)
