@@ -42,7 +42,7 @@ When tested with Suno v5.0 and Producer.ai FUZZ-2.0-Pro:
 pip install metaphor-machine
 
 # From source
-git clone https://github.com/metaphor-machine/metaphor-machine.git
+git clone https://github.com/stayen/metaphor-machine.git
 cd module
 pip install -e ".[dev]"
 ```
@@ -198,8 +198,8 @@ producer_prompt = format_for_producer_ai(chain)
 ### Setup
 
 ```bash
-git clone https://github.com/metaphor-machine/metaphor-machine.git
-cd metaphor-machine
+git clone https://github.com/stayen/metaphor-machine.git
+cd module
 pip install -e ".[dev]"
 pre-commit install
 ```
