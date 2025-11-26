@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "metaphor-machine"
-version = "0.1.0"
+version = "0.9.9"
 description = "Algorithmic generation of rich, plot-like style descriptions for AI music systems"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
 authors = [
-    {name = "Metaphor Machine Contributors"}
+    {name = "Konstantin Boyandin"}
 ]
 keywords = [
     "ai-music",
@@ -64,10 +64,10 @@ metaphor = "metaphor_machine.cli.main:cli"
 mm = "metaphor_machine.cli.main:cli"
 
 [project.urls]
-Homepage = "https://github.com/metaphor-machine/metaphor-machine"
+Homepage = "https://github.com/stayen/metaphor-machine/module"
 Documentation = "https://metaphor-machine.readthedocs.io"
-Repository = "https://github.com/metaphor-machine/metaphor-machine"
-Issues = "https://github.com/metaphor-machine/metaphor-machine/issues"
+Repository = "https://github.com/stayen/metaphor-machine/module"
+Issues = "https://github.com/stayen/metaphor-machine/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/metaphor_machine"]
