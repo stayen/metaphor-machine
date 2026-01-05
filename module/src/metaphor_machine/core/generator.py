@@ -118,31 +118,41 @@ class MetaphorGenerator:
             return self.rng.choice(pool)
 
     def _select_genre_anchor(self) -> MetaphorSlot:
-        """Select a genre anchor (era + subgenre combination)."""
+        """Select a genre anchor (genre with optional prefix)."""
         genre = self.components.genre
+
+        # Get all core genres as the base pool
+        genre_pool = genre.all_core_genres.copy()
 
         # Apply genre hint if configured
         if self.config.genre_hint:
-            # Try to find matching era
             hint_lower = self.config.genre_hint.lower()
-            matching_eras = [e for e in genre.eras if hint_lower in e.lower()]
-            era_pool = matching_eras if matching_eras else genre.eras
+            matching_genres = [g for g in genre_pool if hint_lower in g.lower()]
+            if matching_genres:
+                genre_pool = matching_genres
+
+        genre_pool = self._apply_bias(genre_pool, SlotType.GENRE_ANCHOR)
+        if not genre_pool:
+            raise GenerationError("No valid genres after filtering")
+
+        selected_genre = self.rng.choice(genre_pool)
+
+        # Optionally add a prefix (30% chance)
+        use_prefix = self.rng.random() < 0.3
+        prefix_pool = genre.all_prefixes
+
+        if use_prefix and prefix_pool:
+            prefix = self.rng.choice(prefix_pool)
+            value = genre.build_genre_with_prefix(prefix, selected_genre)
+            source_pool = f"genre/{genre.get_family_for_genre(selected_genre) or 'unknown'}+prefix"
         else:
-            era_pool = genre.eras
+            value = selected_genre
+            source_pool = f"genre/{genre.get_family_for_genre(selected_genre) or 'unknown'}"
 
-        era_pool = self._apply_bias(era_pool, SlotType.GENRE_ANCHOR)
-        if not era_pool:
-            raise GenerationError("No valid genre eras after filtering")
-
-        era = self.rng.choice(era_pool)
-        subgenre_pool = genre.get_subgenres(era)
-        subgenre = self.rng.choice(subgenre_pool) if subgenre_pool else ""
-
-        value = genre.get_full_genre(era, subgenre) if subgenre else era
         return MetaphorSlot(
             slot_type=SlotType.GENRE_ANCHOR,
             value=value,
-            source_pool=f"genre.eras/{era}",
+            source_pool=source_pool,
         )
 
     def _select_intimate_gesture(self) -> MetaphorSlot:

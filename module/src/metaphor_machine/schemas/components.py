@@ -14,30 +14,127 @@ import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
+class ModifiersComponents(BaseModel):
+    """Schema for genre modifier pools (prefixes)."""
+
+    mood: list[str] = Field(
+        default_factory=list,
+        description="Mood modifiers (dark, dreamy, etc.)",
+    )
+    intensity: list[str] = Field(
+        default_factory=list,
+        description="Intensity modifiers (hyper-, liquid, etc.)",
+    )
+    style: list[str] = Field(
+        default_factory=list,
+        description="Style modifiers (prog, symphonic, electro-, etc.)",
+    )
+
+    @property
+    def all_modifiers(self) -> list[str]:
+        """Flatten all modifier pools into single list."""
+        return self.mood + self.intensity + self.style
+
+
 class GenreComponents(BaseModel):
-    """Schema for genre-related component pools."""
+    """Schema for genre-related component pools organized by family."""
 
-    eras: list[str] = Field(
-        ...,
-        min_length=1,
-        description="Base genre/era tags (e.g., 'lo-fi', 'darkwave', 'cinematic')",
+    # Genre families - each contains a list of genres
+    electronic: list[str] = Field(
+        default_factory=list,
+        description="Electronic genres (house, techno, synthwave, etc.)",
     )
-    subgenres: dict[str, list[str]] = Field(
-        default_factory=dict,
-        description="Subgenre pools keyed by parent era",
+    hip_hop_urban: list[str] = Field(
+        default_factory=list,
+        description="Hip-hop and urban genres (boom bap, trap, drill, etc.)",
     )
-    fallback_subgenres: list[str] = Field(
-        default_factory=lambda: ["fusion", "hybrid", "blend"],
-        description="Default subgenres when no specific mapping exists",
+    world_ethnic: list[str] = Field(
+        default_factory=list,
+        description="World and ethnic genres (afrobeat, reggae, salsa, etc.)",
+    )
+    rock_guitar: list[str] = Field(
+        default_factory=list,
+        description="Rock and guitar-based genres (rock, punk, shoegaze, etc.)",
+    )
+    traditional_acoustic: list[str] = Field(
+        default_factory=list,
+        description="Traditional and acoustic genres (jazz, blues, folk, etc.)",
     )
 
-    def get_subgenres(self, era: str) -> list[str]:
-        """Get subgenres for an era, falling back to defaults if needed."""
-        return self.subgenres.get(era, self.fallback_subgenres)
+    # Modifier prefixes
+    modifiers: ModifiersComponents = Field(
+        default_factory=ModifiersComponents,
+        description="Verified modifiers that work as prefixes",
+    )
 
-    def get_full_genre(self, era: str, subgenre: str) -> str:
-        """Combine era and subgenre into full genre anchor."""
-        return f"{era} {subgenre}"
+    # Additional prefixes
+    regional: list[str] = Field(
+        default_factory=list,
+        description="Regional/language prefixes (arabic, japanese, etc.)",
+    )
+    location: list[str] = Field(
+        default_factory=list,
+        description="Location prefixes (dakar, havana, tokyo, etc.)",
+    )
+    instruments: list[str] = Field(
+        default_factory=list,
+        description="Instrument prefixes (piano, sitar, etc.)",
+    )
+
+    # Experimental/unverified genres
+    experimental: list[str] = Field(
+        default_factory=list,
+        description="Experimental/unverified genres (use with caution)",
+    )
+
+    @property
+    def genre_families(self) -> dict[str, list[str]]:
+        """Return all genre families as a dictionary."""
+        return {
+            "electronic": self.electronic,
+            "hip_hop_urban": self.hip_hop_urban,
+            "world_ethnic": self.world_ethnic,
+            "rock_guitar": self.rock_guitar,
+            "traditional_acoustic": self.traditional_acoustic,
+        }
+
+    @property
+    def all_core_genres(self) -> list[str]:
+        """Flatten all core genre family pools into single list."""
+        result = []
+        for genres in self.genre_families.values():
+            result.extend(genres)
+        return result
+
+    @property
+    def all_genres(self) -> list[str]:
+        """Flatten all genres including experimental."""
+        return self.all_core_genres + self.experimental
+
+    @property
+    def all_prefixes(self) -> list[str]:
+        """Flatten all prefix pools (modifiers, regional, location, instruments)."""
+        return (
+            self.modifiers.all_modifiers
+            + self.regional
+            + self.location
+            + self.instruments
+        )
+
+    def get_family_for_genre(self, genre: str) -> str | None:
+        """Find which family a genre belongs to."""
+        genre_lower = genre.lower()
+        for family, genres in self.genre_families.items():
+            if genre_lower in [g.lower() for g in genres]:
+                return family
+        return None
+
+    def build_genre_with_prefix(self, prefix: str, genre: str) -> str:
+        """Combine prefix and genre into full genre anchor."""
+        # Handle prefixes that already end with hyphen
+        if prefix.endswith("-"):
+            return f"{prefix}{genre}"
+        return f"{prefix} {genre}"
 
 
 class IntimateGestureComponents(BaseModel):
@@ -152,7 +249,7 @@ class StyleComponents(BaseModel):
     used by the MetaphorGenerator.
 
     Attributes:
-        genre: Genre/era component pools
+        genre: Genre component pools organized by family with modifiers
         intimate_gesture: Vocal/lead behavior component pools
         dynamic_tension: Motion/energy component pools
         sensory_bridge: Environment/space component pools
@@ -160,8 +257,10 @@ class StyleComponents(BaseModel):
 
     Example:
         >>> components = StyleComponents.from_yaml("style_components.yaml")
-        >>> len(components.genre.eras)
-        39
+        >>> len(components.genre.all_core_genres)
+        153
+        >>> components.genre.electronic[:3]
+        ['acid house', 'acid jazz', 'acid rock']
         >>> components.intimate_gesture.intensity_adjectives["energy"]
         ['whispered', 'hushed', 'breathy', ...]
     """
@@ -230,8 +329,9 @@ class StyleComponents(BaseModel):
             Dictionary mapping pool names to item counts
         """
         return {
-            "genre_eras": len(self.genre.eras),
-            "genre_subgenres": sum(len(v) for v in self.genre.subgenres.values()),
+            "genre_core": len(self.genre.all_core_genres),
+            "genre_experimental": len(self.genre.experimental),
+            "genre_prefixes": len(self.genre.all_prefixes),
             "intimate_adjectives": len(self.intimate_gesture.all_adjectives),
             "intimate_nouns": len(self.intimate_gesture.all_nouns),
             "motion_verbs": len(self.dynamic_tension.motion_verbs),
@@ -253,11 +353,12 @@ class StyleComponents(BaseModel):
         """
         sizes = self.get_pool_sizes()
 
-        # Genre combinations
-        genre_count = sizes["genre_eras"] * max(
-            len(self.genre.fallback_subgenres),
-            max((len(v) for v in self.genre.subgenres.values()), default=1),
-        )
+        # Genre combinations: core genres + optional prefixes
+        # Each genre can be used alone or with any prefix
+        genre_base = sizes["genre_core"] + sizes["genre_experimental"]
+        prefix_count = sizes["genre_prefixes"]
+        # Genres alone + genres with prefixes
+        genre_count = genre_base + (genre_base * prefix_count)
 
         # Intimate gesture combinations
         gesture_count = sizes["intimate_adjectives"] * sizes["intimate_nouns"]

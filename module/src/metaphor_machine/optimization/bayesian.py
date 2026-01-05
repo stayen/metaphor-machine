@@ -70,11 +70,11 @@ class MetaphorEmbedder:
         """Build mappings from slot values to indices."""
         self.slot_indices: dict[str, dict[str, int]] = {}
         self.slot_sizes: dict[str, int] = {}
-        
-        # Genre eras
-        eras = self.components.genre.eras
-        self.slot_indices["genre"] = {era: i for i, era in enumerate(eras)}
-        self.slot_sizes["genre"] = len(eras)
+
+        # Core genres (from all families)
+        genres = self.components.genre.all_core_genres
+        self.slot_indices["genre"] = {genre: i for i, genre in enumerate(genres)}
+        self.slot_sizes["genre"] = len(genres)
         
         # Intimate gesture adjectives
         adjs = self.components.intimate_gesture.all_adjectives
