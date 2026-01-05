@@ -27,12 +27,20 @@ def minimal_components() -> StyleComponents:
     """Create minimal valid StyleComponents for testing."""
     return StyleComponents.from_dict({
         "genre": {
-            "eras": ["lo-fi", "darkwave", "cinematic", "hyperpop", "ritual"],
-            "subgenres": {
-                "lo-fi": ["boom-bap", "chill-hop"],
-                "darkwave": ["electro", "cold-wave"],
+            "electronic": ["lo-fi", "darkwave", "hyperpop", "synthwave"],
+            "hip_hop_urban": ["boom bap", "trap"],
+            "world_ethnic": ["afrobeat", "reggae"],
+            "rock_guitar": ["rock", "punk"],
+            "traditional_acoustic": ["cinematic", "ritual", "jazz"],
+            "modifiers": {
+                "mood": ["dark", "dreamy"],
+                "intensity": ["hyper-", "liquid"],
+                "style": ["prog", "electro-"],
             },
-            "fallback_subgenres": ["fusion", "hybrid"],
+            "regional": ["arabic", "japanese"],
+            "location": ["tokyo", "new orleans"],
+            "instruments": ["piano", "sitar"],
+            "experimental": ["vaporwave"],
         },
         "intimate_gesture": {
             "intensity_adjectives": {
@@ -197,10 +205,11 @@ class TestSingleGeneration:
         """Test generated values come from component pools."""
         m = generator.generate_single()
 
-        # Genre should be from eras (possibly with subgenre)
+        # Genre should be from core genres (possibly with prefix)
         genre_value = m.genre_anchor.value
-        # At minimum, should contain an era
-        assert any(era in genre_value for era in minimal_components.genre.eras)
+        # At minimum, should contain a core genre or experimental genre
+        all_genres = minimal_components.genre.all_genres
+        assert any(genre in genre_value for genre in all_genres)
 
 
 # =============================================================================

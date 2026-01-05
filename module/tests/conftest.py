@@ -9,17 +9,45 @@ def minimal_components_yaml(tmp_path):
     """Create a minimal components YAML file for testing."""
     yaml_content = """
 genre:
-  eras:
+  electronic:
     - darkwave
     - synthpop
-    - trip-hop
     - ambient
-  subgenres:
-    darkwave:
-      - coldwave
-      - ethereal
-    synthpop:
-      - electropop
+    - house
+  hip_hop_urban:
+    - trip-hop
+    - boom bap
+  world_ethnic:
+    - afrobeat
+    - reggae
+  rock_guitar:
+    - rock
+    - punk
+  traditional_acoustic:
+    - jazz
+    - folk
+  modifiers:
+    mood:
+      - dark
+      - dreamy
+    intensity:
+      - hyper-
+      - liquid
+    style:
+      - prog
+      - electro-
+  regional:
+    - arabic
+    - japanese
+  location:
+    - tokyo
+    - new orleans
+  instruments:
+    - piano
+    - sitar
+  experimental:
+    - vaporwave
+    - hyperpop
 
 intimate_gesture:
   intensity_adjectives:

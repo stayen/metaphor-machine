@@ -46,7 +46,7 @@ generator = MetaphorGenerator(components, seed=42)
 # Generate a single metaphor
 metaphor = generator.generate_single()
 print(metaphor)
-# → "darkwave electro, whispered mantras, spiraling synths, neon-alley reverb, dread crescendo"
+# → "dark synthwave, whispered mantras, spiraling synths, neon-alley reverb, dread crescendo"
 
 # Generate a 3-act chain
 chain = generator.generate_chain()
@@ -116,11 +116,13 @@ Each metaphor consists of 5 slots:
 
 | Slot | Purpose | Example |
 |------|---------|---------|
-| **Genre Anchor** | Base style/era | "darkwave electro" |
+| **Genre Anchor** | Base genre (with optional prefix) | "dark synthwave", "japanese house" |
 | **Intimate Gesture** | Vocal/lead behavior | "whispered mantras" |
 | **Dynamic Tension** | Motion and energy | "spiraling synths" |
 | **Sensory Bridge** | Environment/space | "neon-alley reverb" |
 | **Emotional Anchor** | Feeling/resolution | "dread crescendo" |
+
+Genres are organized by family (electronic, hip-hop/urban, world/ethnic, rock/guitar, traditional/acoustic) with optional modifier prefixes (mood, intensity, style, regional, location, instruments).
 
 The combinatorial space exceeds **35 trillion** unique combinations.
 

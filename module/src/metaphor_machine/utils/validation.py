@@ -129,14 +129,12 @@ def validate_components_file(path: str | Path) -> ValidationResult:
         if count < 5:
             result.warnings.append(f"Small pool '{pool_name}' has only {count} items")
 
-    # Check for subgenre coverage
-    eras_with_subgenres = set(components.genre.subgenres.keys())
-    all_eras = set(components.genre.eras)
-    missing_subgenres = all_eras - eras_with_subgenres
-
-    if missing_subgenres and len(missing_subgenres) > len(all_eras) * 0.5:
+    # Check for genre family balance
+    families = components.genre.genre_families
+    empty_families = [name for name, genres in families.items() if not genres]
+    if empty_families:
         result.warnings.append(
-            f"{len(missing_subgenres)} eras have no specific subgenres (using fallbacks)"
+            f"Empty genre families: {', '.join(empty_families)}"
         )
 
     return result
@@ -150,10 +148,10 @@ def check_duplicate_values(components: StyleComponents) -> list[str]:
     """
     warnings = []
 
-    # Check for duplicates within genre eras
-    eras = components.genre.eras
-    if len(eras) != len(set(eras)):
-        warnings.append("Duplicate values in genre.eras")
+    # Check for duplicates within core genres
+    genres = components.genre.all_core_genres
+    if len(genres) != len(set(genres)):
+        warnings.append("Duplicate values in genre pools")
 
     # Check for duplicates in motion verbs
     verbs = components.dynamic_tension.motion_verbs
@@ -177,10 +175,11 @@ def suggest_additions(components: StyleComponents) -> list[str]:
     suggestions = []
 
     # Suggest if certain categories are thin
-    if len(components.genre.eras) < 20:
+    genre_count = len(components.genre.all_core_genres)
+    if genre_count < 20:
         suggestions.append(
-            "Consider adding more genre eras (currently: "
-            f"{len(components.genre.eras)})"
+            "Consider adding more genres (currently: "
+            f"{genre_count})"
         )
 
     adjective_count = len(components.intimate_gesture.all_adjectives)
