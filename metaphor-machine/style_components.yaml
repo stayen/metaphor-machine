@@ -1,104 +1,218 @@
 # style_components.yaml
+# Updated to align with verified Suno Explore styles (Jan 2026)
+# Unverified terms moved to experimental section or removed
 
 genre:
-  eras:
-    - lo-fi
-    - hyperpop
-    - darkwave
-    - ritual
-    - forest
-    - witch-house
-    - cinematic
-    - Gqom-tempo
-    - drone-doom
-    - emo-trap
-    - boom-bap
-    - vaporwave
+  # Core genres verified against Suno Explore
+  # Organized by family for combination logic
+  
+  electronic:
+    - acid house
+    - acid jazz
+    - acid rock
+    - acid techno
+    - acid trance
+    - algorave
+    - ambient dub
+    - ambient house
+    - ambient techno
+    - ambient trance
+    - breakbeat
+    - breakstep
+    - chillstep
+    - chillsynth
+    - chillwave
+    - city pop
+    - drum and bass
+    - drumstep
+    - dubstep
+    - edm
+    - electropop
+    - garage
+    - glitch hop
+    - goa trance
+    - house
+    - hyphy
+    - hypnagogic
+    - illbient
+    - jungle
+    - kawaii future bass
+    - liquid drum and bass
+    - psybient
+    - slushwave
+    - synthpop
     - synthwave
-    - minimal-techno
-    - shoegaze
-    - baroque-pop
-    - chamber-pop
-    - swing-jazz
-    - post-rock
-    - ethno-fusion
-    - dub
+    - techno
+    - trance
+    - trap
+
+  hip_hop_urban:
+    - boom bap
+    - cloud rap
+    - crunk
+    - dembow
+    - dirty south
+    - drill
+    - drill and bass
+    - grime
+    - hip hop
+    - rap
+
+  world_ethnic:
+    - afrobeat
+    - afro-cuban jazz
+    - afro-funk
+    - afro house
+    - afro-jazz
+    - afropiano
+    - afro-rock
+    - afroswing
+    - afro trap
+    - bachata
+    - balkan brass band
+    - bossa nova
+    - cajun
+    - calypso
+    - cape verdean
+    - caribbean
+    - carnatic
+    - celtic
+    - coptic
+    - cumbia
+    - egyptian
+    - flamenco
+    - gnawa
+    - griot
+    - hawaiian
+    - klezmer
+    - mariachi
+    - merengue
+    - norteño
+    - pacific reggae
+    - raga
     - reggae
-    - isicathamiya
-    - phonk
-    - noir
-    - spacewestern
-    - membran-phonk
-    - sacred-harp
-    - tuvan-drone
-    - classical-fugue
-    - memphis-phonk
-    - gagaku
-    - glitch-jazz
-    - steppe-reggae
-    - trip-hop
-    - mbube-soul
-    - echo-pop
-    - epic-doom
-    - dark-orchestral
+    - reggaeton
+    - roots reggae
+    - rumba
+    - salsa
+    - samba
+    - tango
+    - tuareg
 
-  subgenres:
-    lo-fi:
-      - boom-bap
-      - chill-hops
-      - jazz-sample
-      - ambient-lo-fi
-    hyperpop:
-      - meltdown
-      - glitch-pop
-      - chaotic-euphoria
-      - maximalist
-    darkwave:
-      - electro
-      - post-punk
-      - cold-wave
-      - synth-goth
-    ritual:
-      - ambient
-      - chant-driven
-      - ethnic-fusion
-      - ceremonial
-    forest:
-      - folk
-      - field-recording
-      - ambient-nature
-      - ethereal
-    witch-house:
-      - lullaby
-      - haunted-lullaby
-      - dark-ambient
-      - occult-pop
-    cinematic:
-      - pop-ballad
-      - orchestral
-      - epic-swell
-      - underscore
-    Gqom-tempo:
-      - ritual
-      - urban-dance
-      - township-energy
-      - polyrhythmic
-    drone-doom:
-      - folk
-      - funeral-march
-      - processional
-      - apocalyptic
-    emo-trap:
-      - ballad
-      - atmospheric
-      - vulnerable-rap
-      - heartbreak
+  rock_guitar:
+    - alternative rock
+    - blues rock
+    - grunge
+    - indie
+    - math rock
+    - punk
+    - rock
+    - rockabilly
+    - shoegaze
+    - southern rock
+    - surf
+    - surf rock
 
-  fallback_subgenres:
-    - fusion
-    - hybrid
-    - blend
-    - mutation
+  traditional_acoustic:
+    - 16-bit
+    - 2-step
+    - alt-country
+    - americana
+    - american primitivism
+    - anti-folk
+    - appalachian folk
+    - barbershop
+    - bedroom pop
+    - big band
+    - bluegrass
+    - blues
+    - cabaret
+    - chanson
+    - choral
+    - classical
+    - country
+    - delta blues
+    - doo-wop
+    - dream pop
+    - fife and drum blues
+    - folk
+    - gospel
+    - jazz
+    - lo-fi
+    - motown
+    - new jack swing
+    - new wave
+    - opera
+    - p-funk
+    - polka
+    - pop
+    - r&b
+    - soul
+    - swamp blues
+    - swing
+    - symphonic metal
+
+  # Verified modifiers that work as prefixes
+  modifiers:
+    mood:
+      - dark
+      - dreamy
+      - soulful
+      - psychedelic
+    intensity:
+      - hyper-
+      - liquid
+    style:
+      - prog
+      - symphonic
+      - electro-
+      - acoustic
+      - instrumental
+
+  # Regional/language prefixes (verified working)
+  regional:
+    - arabic
+    - bengali
+    - french
+    - hindi
+    - japanese
+    - korean
+    - mandarin
+    - portuguese
+    - russian
+    - spanish
+    - urdu
+
+  # Location prefixes (verified working)
+  location:
+    - dakar
+    - havana
+    - liverpool
+    - new orleans
+    - tokyo
+
+  # Instrument prefixes (verified working)
+  instruments:
+    - accordion
+    - harpsichord
+    - koto
+    - piano
+    - saxophone
+    - sitar
+    - tabla
+
+  # Experimental/unverified - use with caution, may not render as expected
+  experimental:
+    - hyperpop          # hyper- prefix works, but hyperpop as single term unverified
+    - darkwave          # dark + wave work separately
+    - vaporwave         # -wave suffix pattern exists but vaporwave unverified
+    - witch-house       # unverified
+    - drone-doom        # unverified
+    - phonk             # unverified (memphis-phonk, membran-phonk not in list)
+    - trip-hop          # unverified
+    - post-rock         # unverified
+    - baroque-pop       # unverified
+    - chamber-pop       # unverified
 
 intimate_gesture:
   intensity_adjectives:
