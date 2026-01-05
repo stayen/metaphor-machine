@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "metaphor-machine"
-version = "1.0.0"
+version = "1.0.1"
 description = "Algorithmic generation and optimization of AI music style prompts"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    { name = "stayen" },
+    { name = "Konstantin Boyandin", email = "developer@boyandin.com" }
 ]
 keywords = [
     "ai-music",
@@ -26,7 +26,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -76,6 +75,7 @@ mm = "metaphor_machine.cli.main:cli"
 Homepage = "https://github.com/stayen/metaphor-machine"
 Repository = "https://github.com/stayen/metaphor-machine"
 Documentation = "https://github.com/stayen/metaphor-machine#readme"
+Developer = "https://boyandin.com"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/metaphor_machine"]
